@@ -18,6 +18,7 @@ import net.minecraft.util.valueproviders.IntProvider
 import net.minecraft.util.valueproviders.UniformInt
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
+//$ if >=26.3.0 'import net.minecraft.world.level.levelgen.feature.BlockReplacement' else 'import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration'
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest
@@ -95,8 +96,8 @@ data class PostBlock(
         open class OreReplacementRule(
             val target: TargetType
         ): OreDimensionType {
-            override fun replacementSettings(block: BlockState): OreConfiguration.TargetBlockState =
-                OreConfiguration.target(target.asRuleTest(), block)
+            //$ if >=26.3.0 'override fun replacementSettings(block: BlockState): BlockReplacement = BlockReplacement.replace(target.asRuleTest(), block)' else 'override fun replacementSettings(block: BlockState): OreConfiguration.TargetBlockState = OreConfiguration.target(target.asRuleTest(), block)'
+            override fun replacementSettings(block: BlockState): OreConfiguration.TargetBlockState = OreConfiguration.target(target.asRuleTest(), block)
         }
 
         @Serializable

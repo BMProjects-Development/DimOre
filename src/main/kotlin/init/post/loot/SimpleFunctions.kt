@@ -11,7 +11,11 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
+//$ if >=26.3.0 'import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders' else 'import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator'
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
+//? if >=26.3.0 {
+/*import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders
+*///?}
 
 @Serializable
 @SerialName("ore_bonus")
@@ -47,5 +51,6 @@ data class SetCountUniform(
 ): SimpleFunction() {
     //$ if >1.21.1 'override fun asMC(lookupProvider: HolderLookup.Provider): LootItemConditionalFunction.Builder<*> =' else 'override fun asMC(lookupProvider: HolderGetter.Provider): LootItemConditionalFunction.Builder<*> ='
     override fun asMC(lookupProvider: HolderLookup.Provider): LootItemConditionalFunction.Builder<*> =
+        //$ if >=26.3.0 'SetItemCountFunction.setCount(ContextIntProviders.fromFloat(ContextFloatProviders.between(min, max)), add)' else 'SetItemCountFunction.setCount(UniformGenerator.between(min, max), add)'
         SetItemCountFunction.setCount(UniformGenerator.between(min, max), add)
 }

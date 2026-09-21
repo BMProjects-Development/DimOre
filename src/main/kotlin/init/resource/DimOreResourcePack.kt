@@ -13,6 +13,7 @@ import com.algorithmlx.dimore.util.ResLoc
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+//$ if >=26.3.0 'import net.minecraft.server.packs.AbstractPackMetadataResources' else 'import net.minecraft.server.packs.AbstractPackResources'
 import net.minecraft.server.packs.AbstractPackResources
 import net.minecraft.server.packs.PackLocationInfo
 import net.minecraft.server.packs.PackResources
@@ -21,6 +22,7 @@ import net.minecraft.server.packs.resources.IoSupplier
 import java.io.File
 import java.io.InputStream
 
+//$ if >=26.3.0 'class DimOreResourcePack(location: PackLocationInfo) : AbstractPackMetadataResources(location), PackResources {' else 'class DimOreResourcePack(location: PackLocationInfo) : AbstractPackResources(location) {'
 class DimOreResourcePack(location: PackLocationInfo) : AbstractPackResources(location) {
     private val targetPath = File("config/$ModId/client/")
     private val generatedData by lazy(::createMiningTagResources)

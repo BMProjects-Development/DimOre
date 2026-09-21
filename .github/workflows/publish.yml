@@ -68,7 +68,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
-          gradle-version: '9.2.1'
+          gradle-version: '9.6.1'
       - name: Validate CurseForge credentials
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
@@ -96,7 +96,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
-          gradle-version: '9.2.1'
+          gradle-version: '9.6.1'
       - name: Validate Modrinth credentials
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}

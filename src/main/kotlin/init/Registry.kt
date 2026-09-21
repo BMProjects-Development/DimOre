@@ -35,7 +35,11 @@ import net.minecraft.world.level.storage.loot.LootTable
 import net.minecraft.world.level.storage.loot.LootPool
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry
 import net.minecraft.world.level.storage.loot.entries.LootItem
+//$ if >=26.3.0 'import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders' else 'import net.minecraft.world.level.storage.loot.providers.number.ConstantValue'
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue
+//? if >=26.3.0 {
+/*import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders
+*///?}
 import net.minecraft.server.packs.resources.ResourceManager
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener
 import net.minecraft.util.profiling.ProfilerFiller
@@ -68,6 +72,7 @@ import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executor
 *///?}
+//$ if >=26.3.0 'import net.minecraft.world.level.levelgen.feature.Feature' else 'import net.minecraft.world.level.levelgen.feature.ConfiguredFeature'
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature
 import net.minecraft.world.level.levelgen.placement.PlacedFeature
 //?}
@@ -117,6 +122,7 @@ object Registry {
         }
         *///?} else {
         DynamicRegistrySetupCallback.EVENT.register { regMgr ->
+            //$ if >=26.3.0 'val confReg = regMgr.getOptional(Registries.FEATURE)' else 'val confReg = regMgr.getOptional(Registries.CONFIGURED_FEATURE)'
             val confReg = regMgr.getOptional(Registries.CONFIGURED_FEATURE)
             val placedReg = regMgr.getOptional(Registries.PLACED_FEATURE)
 
@@ -234,7 +240,9 @@ object Registry {
         }
 
         return LootTable.lootTable().withPool(LootPool.lootPool()
+            //$ if >=26.3.0 '.setRolls(ContextIntProviders.fromFloat(ContextFloatProviders.exactly(table.rolls)))' else '.setRolls(ConstantValue.exactly(table.rolls))'
             .setRolls(ConstantValue.exactly(table.rolls))
+            //$ if >=26.3.0 '.setBonusRolls(ContextFloatProviders.exactly(table.bonusRolls))' else '.setBonusRolls(ConstantValue.exactly(table.bonusRolls))'
             .setBonusRolls(ConstantValue.exactly(table.bonusRolls))
             .add(AlternativesEntry.alternatives(
                 *lootItemsConditioned.toTypedArray(),
@@ -313,6 +321,7 @@ object Registry {
     }
     *///?} else {
     private fun registerFeatures(
+        //$ if >=26.3.0 'cfReg: Registry<Feature>,' else 'cfReg: Registry<ConfiguredFeature<*, *>>,'
         cfReg: Registry<ConfiguredFeature<*, *>>,
         pfReg: Registry<PlacedFeature>
     ) {
@@ -337,6 +346,7 @@ object Registry {
     }
 
     private fun createFeature(
+        //$ if >=26.3.0 'cfReg: Registry<Feature>,' else 'cfReg: Registry<ConfiguredFeature<*, *>>,'
         cfReg: Registry<ConfiguredFeature<*, *>>,
         pfReg: Registry<PlacedFeature>,
         id: String,
@@ -349,6 +359,7 @@ object Registry {
         val configured = OreGeneratorFactory.createConfigured(dimType, block, settings.size)
         Registry.register(cfReg, location, configured)
 
+        //$ if >=26.3.0 'val cfKey = ResourceKey.create(Registries.FEATURE, location)' else 'val cfKey = ResourceKey.create(Registries.CONFIGURED_FEATURE, location)'
         val cfKey = ResourceKey.create(Registries.CONFIGURED_FEATURE, location)
         val entry =
             //$ if >1.21.1 'cfReg.get(cfKey).orElseThrow()' else 'cfReg.getHolder(cfKey).orElseThrow()'
